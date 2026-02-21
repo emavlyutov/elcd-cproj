@@ -1,0 +1,6 @@
+[submodule "sources/shared/elAPI/elHAL"]
+	path = sources/shared/elAPI/elHAL
+	url = ./sources/shared/elAPI/elHAL
+[submodule "sources/shared/elAPI/elRTOS"]
+	path = sources/shared/elAPI/elRTOS
+	url = ./sources/shared/elAPI/elRTOS
