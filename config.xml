@@ -1,0 +1,105 @@
+<submodule>
+    <comment>Shared sources configuration</comment>
+    <path>sources/shared</path>
+    <submodule>
+        <comment>ElAPI configuration</comment>
+        <path>elAPI</path>
+        <submodule>
+            <name>elHAL</name>
+            <comment>elHAL configuration</comment>
+            <git>git@github.com:emavlyutov/elcd-elhal.git</git>
+            <config enabled="y">CONFIG_ELAPI_HAL_EN</config>
+            <config>CONFIG_ELAPI_HAL_IRQ_EN</config>
+            <config>CONFIG_ELAPI_HAL_GPIO_EN</config>
+            <config>CONFIG_ELAPI_HAL_IIC_EN</config>
+            <config>CONFIG_ELAPI_HAL_UART_EN</config>
+            <config>CONFIG_ELAPI_HAL_SPI_EN</config>
+            <config>CONFIG_ELAPI_HAL_SDIO_EN</config>
+            <config>CONFIG_ELAPI_HAL_EMAC_EN</config>
+            <config>CONFIG_ELAPI_HAL_DMA_EN</config>
+        </submodule>
+        <submodule>
+            <name>elRTOS</name>
+            <comment>elRTOS configuration</comment>
+            <git>git@github.com:emavlyutov/elcd-elrtos.git</git>
+            <config enabled="y">CONFIG_ELAPI_ELRTOS_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_QUEUE_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_SEMAPHORE_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_MUTEX_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_EVENT_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_DRIVER_EN</config>
+            <config>CONFIG_ELAPI_ELRTOS_IRQ_EN</config>
+        </submodule>
+        <submodule>
+            <name>elCli</name>
+            <comment>elCli configuration</comment>
+            <git>git@github.com:emavlyutov/elcd-elcli.git</git>
+            <config enabled="y">CONFIG_ELAPI_CLI_EN</config>
+            <config>CONFIG_ELAPI_CLI_AUTH_EN</config>
+        </submodule>
+        <submodule>
+            <path>elCrypto</path>
+            <comment>elCrypto configuration</comment>
+            <config enabled="y">CONFIG_ELAPI_ELCRYPTO_EN</config>
+            <submodule>
+                <name>AES</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-aes.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_AES_EN</config>
+            </submodule>
+            <submodule>
+                <name>SHA</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-sha.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_SHA_EN</config>
+            </submodule>
+            <submodule>
+                <name>GOST28147</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-gost28147.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_GOST_EN</config>
+            </submodule>
+            <submodule>
+                <name>MD5</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-md5.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_MD5_EN</config>
+            </submodule>
+            <submodule>
+                <name>SBCA-KZ</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-sbca-kz.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_SBCA_KZ_EN</config>
+            </submodule>
+            <submodule>
+                <name>KALKAN</name>
+                <git>git@github.com:emavlyutov/elcd-elcrypto-kalkan.git</git>
+                <config enabled="y">CONFIG_ELAPI_CTYPRO_KALKAN_EN</config>
+            </submodule>
+        </submodule>
+    </submodule>
+    <submodule>
+        <path>thirdparty</path>
+        <comment>Thirdparty libraries configuration</comment>
+        <config>CONFIG_THIRDPARTY_EN</config>
+        <submodule>
+            <name>liblwip</name>
+            <git>git@github.com:emavlyutov/elcd-liblwip.git</git>
+            <path>lwip</path>
+            <config enabled="y">CONFIG_THIRDPARTY_LWIP_EN</config>
+        </submodule>
+        <submodule>
+            <name>libmbedtls</name>
+            <git>git@github.com:emavlyutov/elcd-libmbedtls.git</git>
+            <path>mbedTLS</path>
+            <config enabled="y">CONFIG_THIRDPARTY_MBEDTLS_EN</config>
+        </submodule>
+        <submodule>
+            <name>libfatfs</name>
+            <git>git@github.com:emavlyutov/elcd-libfatfs.git</git>
+            <path>FatFS</path>
+            <config enabled="y">CONFIG_THIRDPARTY_FATFS_EN</config>
+        </submodule>
+        <submodule>
+            <name>libfreertos</name>
+            <git>git@github.com:emavlyutov/elcd-libfreertos.git</git>
+            <path>FreeRTOS</path>
+            <config enabled="y">CONFIG_THIRDPARTY_FREERTOS_EN</config>
+        </submodule>
+    </submodule>  
+</submodule>
