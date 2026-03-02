@@ -1,4 +1,4 @@
 #!/bin/bash
-# Wrapper for software/mktarg.py
+# Wrapper for script/py/*.py
 cd "$(dirname "$0")"
-exec python3 mktarg.py "$@"
+exec python3 script/py/mktarg.py "$@"
