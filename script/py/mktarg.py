@@ -329,18 +329,13 @@ SECTIONS
 
 def ws_init(ws_name, submodule_url=None):
     """
-    Initialize workspace: switch/create branch, add submodule for sources/WS_NAME, create common.
+    Initialize workspace: add submodule for sources/WS_NAME, create common.
+    Works in current repo/branch only (no git switching).
     Returns ALREADY_INIT exit if submodule already exists.
     """
     root = get_project_root()
     sources = get_sources_dir()
     ws_path = f"sources/{ws_name}"
-
-    if git_branch_exists(root, ws_name):
-        subprocess.run(["git", "switch", ws_name], cwd=root, check=True)
-        subprocess.run(["git", "submodule", "update", "--init", "--recursive"], cwd=root, check=True)
-    else:
-        subprocess.run(["git", "checkout", "-b", ws_name], cwd=root, check=True)
 
     if git_submodule_exists(root, ws_path):
         print(f"ws_init: {ws_name} already initialized (submodule exists)")
@@ -361,11 +356,8 @@ def ws_init(ws_name, submodule_url=None):
 
 
 def ws_close():
-    """Close workspace: switch to main, remove tracked files."""
-    root = get_project_root()
-    subprocess.run(["git", "switch", "main"], cwd=root, check=True)
-    subprocess.run(["git", "rm", "-rf", "."], cwd=root, capture_output=True, check=False)
-    print("ws_close: switched to main")
+    """Close workspace (no git switching - single repo mode)."""
+    print("ws_close: done (single repo mode, no branch switch)")
 
 
 def update_prj_platform_config(ws_name, prj_name, submodule_name_or_path):
