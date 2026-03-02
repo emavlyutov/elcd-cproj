@@ -1,0 +1,15 @@
+<target>
+    <name>ZynqPS0</name>
+    <core>arm0</core>
+    <makefile>gcc_zynqps.mk</makefile>
+</target>
+<target>
+    <name>ZynqPS1</name>
+    <core>arm1</core>
+    <makefile>gcc_zynqps.mk</makefile>
+</target>
+<target>
+    <name>ZynqMB</name>
+    <core>mb</core>
+    <makefile>gcc_microblaze.mk</makefile>
+</target>
