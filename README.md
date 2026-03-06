@@ -6,20 +6,20 @@ Independent C build system for embedded projects. Uses simple Makefiles and shar
 
 **From main repo:**
 ```batch
-python mktarg.py init_workspace elvpn
-python mktarg.py init_prj elvpn
+swtools init_workspace elvpn
+swtools init_prj elvpn
 ```
 
 **Standalone (from software/):**
 ```batch
-python mktarg.py init_workspace elvpn
-python mktarg.py init_prj elvpn
-python mktarg.py build_project elvpn fsbl
+swtools init_workspace elvpn
+swtools init_prj elvpn
+swtools build_project elvpn fsbl
 ```
 
-## mktarg.py Commands
+## swtools Commands
 
-`python mktarg.py <function> [WS_NAME] [PROJECT_NAME] [args...]`
+`swtools <function> [WS_NAME] [PROJECT_NAME] [args...]`
 
 | Function | Description |
 |----------|-------------|
@@ -56,4 +56,4 @@ Requires `PROJECT_NAME` and `TARGETS` in sources/Makefile (set by init_prj).
 
 ## Wrappers
 
-- `mktarg.sh` / `mktarg.bat` - wrappers that call `python mktarg.py`
+- `swtools.sh` / `swtools.bat` - wrappers that call `python script/py/swtools.py`

@@ -1,15 +1,23 @@
-MAKESYS := makesys
 MAKE := make
+MAKESYS := sources/Makefile	
 
--include sources/Makefile
+ifneq ($(WS_NAME),)
+$(error WS_NAME is not set)
+endif
+ifneq ($(PRJ_NAME),)
+$(error PRJ_NAME is not set)
+endif
+ifneq ($(BSP_NAME),)
+$(error BSP_NAME is not set)
+endif
 
-.PHONY: all clean build_%
+.PHONY: debug release clean
 
-PROJECT_NAME ?=
-all: release
+debug:
+	$(MAKE) -C $(MAKESYS) TARGET_WS=$(WS_NAME) TARGET_PROJECT=$(PRJ_NAME) TARGET_BSP=$(BSP_NAME) __DEBUG_EN=y
 
-build_%:
-	$(MAKE) -C $(MAKESYS) TARGET_PROJECT=$* PROJECT_NAME=$(PROJECT_NAME)
+release:
+	$(MAKE) -C $(MAKESYS) TARGET_WS=$(WS_NAME) TARGET_PROJECT=$(PRJ_NAME) TARGET_BSP=$(BSP_NAME)
 
 clean:
-	$(MAKE) -C $(MAKESYS) clean
+	$(MAKE) -C $(MAKESYS) TARGET_WS=$(WS_NAME) TARGET_PROJECT=$(PRJ_NAME) TARGET_BSP=$(BSP_NAME) clean

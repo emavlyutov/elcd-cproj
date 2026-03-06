@@ -1,2 +1,4 @@
 todo
 template/
+*.pyc
+script/py/__pycache__/

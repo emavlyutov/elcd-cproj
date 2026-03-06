@@ -5,34 +5,36 @@
 # GCC_SIZE with platform-specific flags (e.g. cortex-a9 for Zynq, v10.0 for MicroBlaze).
 #==============================================================================
 
-XILINX_PATH:=C:/Xilinx/SDK/2018.2/gnu/
+ifeq ($(TARGET_TOOLCHAIN),)
+$(error TARGET_TOOLCHAIN is not set)
+endif
 
-$(eval TARGET_GCC=$(call REMOVE_NUMBERS,'$(TARGET_CORE)'))
--include gcc_$(TARGET_GCC).mk
-$(eval GCC_PLATFORM=$(call UPPERCASE,'$(TARGET_GCC)'))
+-include $(TARGET_TOOLCHAIN)
 
-ifneq (GCC_$(GCC_PLATFORM)_LD,)
-    # Common GCC flags
-    GCC_WFLAGS= \
+# Common GCC flags
+GCC_WFLAGS= \
         -std=gnu11 \
         -Werror \
         -pedantic-errors \
         -Wall \
         -Wextra \
-        -Wpedantic
+        -Wpedantic -std=c11
 
-    # GCC flags concat
-    GCC_FLAGS=$(GCC_TARGET_FLAGS) $(GCC_WFLAGS)
-    GCC_CC_FLAGS=$(GCC_INCFLAGS) $(GCC_DEFFLAGS)
-    GCC_LD_FLAGS=$(GCC_LIBFLAGS)
-
-    # GCC toolchain CLI call commands
-    GCC_LD=$(TOOLCHAIN_PATH)$(TOOLCHAIN)-gcc $(GCC_FLAGS) $(GCC_LD_FLAGS)
-    GCC_CC=$(TOOLCHAIN_PATH)$(TOOLCHAIN)-gcc $(GCC_FLAGS) $(GCC_CC_FLAGS)
-    GCC_SIZE=$(TOOLCHAIN_PATH)$(TOOLCHAIN)-size
-
-    # GCC toolchain CLI call commands
-    GCC_$(GCC_PLATFORM)_LD:=$(GCC_LD)
-    GCC_$(GCC_PLATFORM)_CC:=$(GCC_CC)
-    GCC_$(GCC_PLATFORM)_SIZE:=$(GCC_SIZE)
+ifdef (__DEBUG_EN)
+    GCC_CFLAGS=-O0 -g3
+    GCC_LFLAGS=
+else
+    GCC_CFLAGS=-ffunction-sections -fdata-sections -O2
+    GCC_LFLAGS=-Wl,--gc-sections
 endif
+
+# GCC flags concat
+GCC_FLAGS=$(GCC_TARGET_FLAGS) $(GCC_WFLAGS)
+GCC_CC_FLAGS=$(GCC_CFLAGS) $(GCC_INCFLAGS) $(GCC_DEFFLAGS) -c
+GCC_LD_FLAGS=$(GCC_LFLAGS) $(GCC_LIBFLAGS)
+
+# GCC toolchain CLI call commands
+GCC_LD=$(GCC_PATH)$(GCC_PREFIX)-gcc $(GCC_FLAGS) $(GCC_LD_FLAGS)
+GCC_CC=$(GCC_PATH)$(GCC_PREFIX)-gcc $(GCC_FLAGS) $(GCC_CC_FLAGS)
+GCC_AR=$(GCC_PATH)$(GCC_PREFIX)-ar
+GCC_SIZE=$(GCC_PATH)$(GCC_PREFIX)-size

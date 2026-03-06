@@ -76,10 +76,10 @@
     <submodule>
         <path>thirdparty</path>
         <comment>Thirdparty libraries configuration</comment>
-        <config>CONFIG_THIRDPARTY_EN</config>
+        <config enabled="y">CONFIG_THIRDPARTY_EN</config>
         <submodule>
             <name>liblwip</name>
-            <git>git@github.com:emavlyutov/elcd-liblwip.git</git>
+            <git>git@github.com:emavlyutov/lwip.git</git>
             <path>lwip</path>
             <config enabled="y">CONFIG_THIRDPARTY_LWIP_EN</config>
         </submodule>

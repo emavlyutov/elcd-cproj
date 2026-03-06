@@ -9,25 +9,24 @@
 # SFP: transceiver (I2C, GPIO), home/world; requires GPIO, IIC.
 #==============================================================================
 
-COMMON_SOURCES=
-COMMON_INCFLAGS=
+SRCS+= $(SHARED_PATH)main.c
 
-ifneq ($(CONFIG_PERIPH_CM_CONFIG_EN)$(CONFIG_PERIPH_CM_DATA_EN),)
-    COMMON_INCFLAGS+= -I"$(SOURCE_PATH)common/periph/cm"
-endif
-ifeq ($(CONFIG_PERIPH_CM_CONFIG_EN),y)
-    COMMON_SOURCES+= $(SOURCE_PATH)common/periph/cm/cm_config.c
-endif
-ifeq ($(CONFIG_PERIPH_CM_DATA_EN),y)
-    COMMON_SOURCES+= $(SOURCE_PATH)common/periph/cm/cm_data.c
-endif
+ELAPIDIR=$(SHARED_PATH)elAPI/
+-include $(ELAPIDIR)Makefile
+SRCS+= $(ELAPISRCS)
+OBJS+= $(ELAPIOBJS)
+LIBS+= $(ELAPILIBS)
+INCFLAGS+= $(ELAPIINCFLAGS)
+DEFFLAGS+= $(ELAPIDEFFLAGS)
+LIBFLAGS+= $(ELAPILIBFLAGS)
 
-ifeq ($(CONFIG_PERIPH_TRNG_EN),y)
-    COMMON_SOURCES+= $(SOURCE_PATH)common/periph/trng/trng.c
-    COMMON_INCFLAGS+= -I"$(SOURCE_PATH)common/periph/trng"
-endif
-
-ifeq ($(CONFIG_PERIPH_SFP_EN),y)
-    COMMON_SOURCES+= $(SOURCE_PATH)common/periph/sfp/sfp.c
-    COMMON_INCFLAGS+= -I"$(SOURCE_PATH)common/periph/sfp"
+THIRDPARTYDIR=$(SHARED_PATH)thirdparty/
+ifeq ($(CONFIG_THIRDPARTY_EN),y)
+    -include $(THIRDPARTYDIR)Makefile
+    SRCS+= $(THIRDPARTYSRCS)
+    OBJS+= $(THIRDPARTYOBJS)
+    LIBS+= $(THIRDPARTYLIBS)
+    INCFLAGS+= $(THIRDPARTYINCFLAGS)
+    DEFFLAGS+= $(THIRDPARTYDEFFLAGS)
+    LIBFLAGS+= $(THIRDPARTYLIBFLAGS)
 endif

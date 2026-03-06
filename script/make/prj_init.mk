@@ -4,73 +4,75 @@
 # Builds single project (TARGET_PROJECT from root). Requires SOURCE_PATH from
 # Makefile. Includes platform.config, aggregates SRCS from ElAPI/thirdparty/project.
 #==============================================================================
+ifeq (,$(TARGET_WS))
+$(error TARGET_WS is not set)
+endif
+ifeq (,$(TARGET_PROJECT))
+$(error TARGET_PROJECT is not set)
+endif
+ifeq (,$(TARGET_BSP))
+$(error TARGET_BSP is not set)
+endif
+ifeq (,$(MAKESCRIPT_PATH))
+$(error TARGET_WS is not set)
+endif
+ifeq (,$(SOURCES_PATH))
+$(error SOURCES_PATH is not set)
+endif
+ifeq (,$(BUILD_PATH))
+$(error BUILD_PATH is not set)
+endif
+ifeq (,$(ELF_PATH))
+$(error ELF_PATH is not set)
+endif
+ifeq (,$(LIBS_PATH))
+$(error LIBS_PATH is not set)
+endif
+ifeq (,$(BSP_PATH))
+$(error BSP_PATH is not set)
+endif
+ifeq (,$(SHARED_PATH))
+$(error SHARED_PATH is not set)
+endif
+ifeq (,$(COMMON_PATH))
+$(error COMMON_PATH is not set)
+endif
 
+include $(MAKESCRIPT_PATH)shell.mk
+
+# Read project configuration
+include $(SOURCES_PATH)platform.config
+
+# Source aggregation
 SRCS:=
 OBJS:=
 LIBS:=
-INCFLAGS=-I"$(SOURCE_PATH)"
-DEFFLAGS=
-LIBFLAGS=
+INCFLAGS:=
+DEFFLAGS:=
+LIBFLAGS:=
+include $(BSP_PATH)Makefile
+include $(SOURCES_PATH)Makefile
+include $(SHARED_PATH)Makefile
+include $(COMMON_PATH)Makefile
 
-# PROJECT_NAME (from mktarg prj_init): sources/<project>/<target>/, else sources/<target>/
-ifeq ($(PROJECT_NAME),)
-PROJECT_PATH:=$(SOURCE_PATH)$(TARGET_PROJECT)/
-MAIN_SRC:=$(SOURCE_PATH)main.c
-else
-PROJECT_PATH:=$(SOURCE_PATH)$(PROJECT_NAME)/$(TARGET_PROJECT)/
-MAIN_SRC:=$(SOURCE_PATH)$(PROJECT_NAME)/main.c
-endif
-
--include $(PROJECT_PATH)platform.config
-
-# Source aggregation
-SRCS=$(MAIN_SRC)
-ifeq ($(CONFIG_AMP_EN),y)
-    DEFFLAGS+= -DUSE_AMP
-endif
-ifeq ($(CONFIG_ELAPI_ELRTOS_EN),y)
-    LIBS+=-lfreertos,
-endif
-
-COMMON_DIR=$(SOURCE_PATH)shared/
--include $(COMMON_DIR)Makefile
-SRCS+= $(COMMON_SOURCES)
-INCFLAGS+= $(COMMON_INCFLAGS)
-
-ELAPIDIR=$(COMMON_DIR)elAPI/
--include $(ELAPIDIR)Makefile
-SRCS+= $(ELAPISOURCES)
-INCFLAGS+= $(ELAPIINCFLAGS)
-DEFFLAGS+= $(ELAPIDEFFLAGS)
-
-THIRDPARTY_DIR=$(COMMON_DIR)thirdparty/
-ifeq ($(CONFIG_THIRDPARTY_EN),y)
-    -include $(THIRDPARTY_DIR)Makefile
-    SRCS+= $(THIRDPARTY_SOURCES)
-    INCFLAGS+= $(THIRDPARTY_INCFLAGS)
-endif
-
--include $(PROJECT_PATH)Makefile
+# Initialize toolchain
+include $(MAKESCRIPT_PATH)toolchain.mk
 
 # Build object list
-OBJS := $(OBJS_COMMON) $(OBJS) $(patsubst %.c, $(BUILD_PATH)$(TARGET_PROJECT)/%.o, $(SRCS_COMMON) $(SRCS:$(SOURCE_PATH)%.c=%.c))
-LIBS := $(strip $(LIBS_COMMON)$(LIBS))
+OBJS := $(OBJS) $(patsubst %.c, $(BUILD_PATH)/%.o, $(SRCS_COMMON) $(SRCS:$(SOURCE_PATH)%.c=%.c))
+LIBSLIST := $(lastword $(patsubst %.a, $(lastword $(subst /, ,$(%))), $(LIBS)))
+LDFLAGS := -Wl,-T -Wl,"$(GCC_LDSCRIPT_PATH)" $(LIBFLAGS) $(LIBSLIST:%=-l%)
 
--include toolchain.mk
-GCC_LD := $(GCC_$(GCC_PLATFORM)_LD) $(GCC_$(GCC_PLATFORM)_LD_FLAGS) $(LIBFLAGS)
-GCC_CC := $(GCC_$(GCC_PLATFORM)_CC) $(GCC_$(GCC_PLATFORM)_CC_FLAGS) $(INCFLAGS) $(DEFFLAGS)
-GCC_SIZE := $(GCC_$(GCC_PLATFORM)_SIZE)
-
-$(BUILD_PATH)$(TARGET_PROJECT)/%.o: $(SOURCE_PATH)%.c
-	@echo "Compiling $(TARGET_PROJECT), source $<"
+$(BUILD_PATH)/%.o: $(SOURCE_PATH)%.c
+	@echo "Compiling source $<"
 	@$(call MKDIR,$(dir $@))
-	@$(GCC_CC) -O0 -g3 -c -ffunction-sections -fdata-sections -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	@$(GCC_CC) $(INCFLAGS) $(DEFFLAGS) -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo "Done"
 
-$(ELF_PATH)$(TARGET_PROJECT).elf: $(OBJS) $(PROJECT_PATH)ldscript.ld
-	@echo "Linking $(TARGET_PROJECT).elf"
+$(ELF_PATH)$(TARGET_PROJECT).elf: $(OBJS) $(LIBS)
+	@echo "Linking elf file $<"
 	@$(call MKDIR,$(dir $@))
-	@$(GCC_LD) -Wl,-T -Wl,"$(PROJECT_PATH)ldscript.ld" -Wl,--gc-sections -o "$@" $(OBJS) -Wl,--start-group,-lxil,-lgcc,-lc,$(LIBS)--end-group
+	@$(GCC_LD) $(LDFLAGS) $(OBJS) -o "$@" 
 	@echo "Done"
 
 $(ELF_PATH)$(TARGET_PROJECT).elf.size: $(ELF_PATH)$(TARGET_PROJECT).elf
