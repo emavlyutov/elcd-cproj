@@ -1,0 +1,15 @@
+[submodule "sources/elvpn"]
+	path = sources/elvpn
+	url = git@github.com:emavlyutov/elvpn-src.git
+[submodule "sources/shared/thirdparty/lwip"]
+	path = sources/shared/thirdparty/lwip
+	url = git@github.com:emavlyutov/lwip.git
+[submodule "sources/shared/elAPI/elHAL"]
+	path = sources/shared/elAPI/elHAL
+	url = git@github.com:emavlyutov/elcd-elhal.git
+[submodule "sources/shared/elAPI/elRTOS"]
+	path = sources/shared/elAPI/elRTOS
+	url = git@github.com:emavlyutov/elcd-elrtos.git
+[submodule "sources/shared/elAPI/elCli"]
+	path = sources/shared/elAPI/elCli
+	url = git@github.com:emavlyutov/elcd-elcli.git
