@@ -13,3 +13,6 @@
 [submodule "sources/shared/elAPI/elCli"]
 	path = sources/shared/elAPI/elCli
 	url = git@github.com:emavlyutov/elcd-elcli.git
+[submodule "sources/shared/thirdparty/RPMsg-Lite"]
+	path = sources/shared/thirdparty/RPMsg-Lite
+	url = git@github.com:emavlyutov/rpmsg-lite.git

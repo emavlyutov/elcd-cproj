@@ -101,5 +101,11 @@
             <path>FreeRTOS</path>
             <config enabled="y">CONFIG_THIRDPARTY_FREERTOS_EN</config>
         </submodule>
+        <submodule>
+            <name>librpmsg</name>
+            <git>git@github.com:emavlyutov/rpmsg-lite.git</git>
+            <path>RPMsg-Lite</path>
+            <config enabled="y">CONFIG_THIRDPARTY_RPMSG_LITE_EN</config>
+        </submodule>
     </submodule>  
 </submodule>
