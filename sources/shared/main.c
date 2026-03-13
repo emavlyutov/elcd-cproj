@@ -10,7 +10,7 @@
  * This module provides the main() entry point: platform_init(), application_start(),
  * and optionally elRtosStartScheduler() when RTOS is enabled.
  *
- * @note This file is the primary application entry for ElVPN projects.
+ * @note This file is the primary application entry for ElCyberDev projects.
  * @warning Do not modify this file directly unless you are the designated maintainer.
  */
 
